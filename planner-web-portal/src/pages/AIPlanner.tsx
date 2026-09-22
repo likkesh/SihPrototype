@@ -1,5 +1,8 @@
 import { useState } from 'react';
-import { BrainCircuit, CheckCircle2, Play, Settings2, FileBarChart, Loader2, RefreshCw, Clock } from 'lucide-react';
+import { 
+  BrainCircuit, CheckCircle2, Play, Settings2, Loader2, RefreshCw, Clock, 
+  ArrowRight, ShieldCheck, Cpu
+} from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
@@ -8,11 +11,11 @@ import { Modal } from '../components/ui/Modal';
 import type { BlockPlan } from '../data/types';
 
 const SIMULATION_STEPS = [
-  "Collecting maintenance requests...",
-  "Checking train schedules and conflicts...",
-  "Evaluating available block windows...",
-  "Optimizing maintenance task combinations (OR-Tools)...",
-  "Generating feasible block schedule...",
+  "Aggregating Maintenance Requests...",
+  "Analyzing Train Schedules & Network Constraints...",
+  "Identifying Feasible Block Windows...",
+  "Executing OR-Tools Resource Optimization...",
+  "Generating Final Block Plan...",
 ];
 
 export function AIPlanner() {
@@ -29,7 +32,6 @@ export function AIPlanner() {
     setHasGenerated(false);
     setSimulationStep(0);
     
-    // Simulate steps
     let currentStep = 0;
     const interval = setInterval(() => {
       currentStep++;
@@ -39,9 +41,8 @@ export function AIPlanner() {
         clearInterval(interval);
         setIsSimulating(false);
         setHasGenerated(true);
-        // Simulation complete, the shared plans state remains to be interacted with
       }
-    }, 800);
+    }, 1200);
   };
 
   const handleApprove = (id: string) => {
@@ -55,165 +56,198 @@ export function AIPlanner() {
   };
 
   return (
-    <div className="space-y-6 max-w-6xl mx-auto">
+    <div className="space-y-6 max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 tracking-tight">Automatic Block Planning</h2>
-          <p className="text-slate-500 mt-1">AI-powered optimization engine for scheduling maintenance blocks</p>
+          <h2 className="text-3xl font-bold text-slate-800 tracking-tight">AI Block Planner Engine</h2>
+          <p className="text-slate-500 mt-1 max-w-3xl">
+            Generate optimized maintenance blocks using operational constraints, train schedules, resource availability and maintenance priorities.
+          </p>
         </div>
         
         <Button 
           variant="primary" 
           size="lg" 
-          className="shadow-md bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all border-0"
+          className="shadow-xl bg-gradient-to-r from-blue-700 to-indigo-700 hover:from-blue-800 hover:to-indigo-800 transition-all border-0 rounded-full px-8"
           onClick={handleGenerate}
           disabled={isSimulating}
         >
           {isSimulating ? (
             <Loader2 className="w-5 h-5 mr-2 animate-spin" />
           ) : (
-            <BrainCircuit className="w-5 h-5 mr-2" />
+            <Cpu className="w-5 h-5 mr-2" />
           )}
-          Generate Optimized Plan
+          Run OR-Tools Optimization
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        {/* Input Parameters */}
-        <Card className="lg:col-span-1">
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Settings2 className="w-5 h-5 mr-2 text-slate-500" />
-              Optimization Inputs
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <InputSummaryItem label="Pending Requests" value={requests.filter(r => r.status === 'Pending').length} />
-            <InputSummaryItem label="Critical Tasks" value={requests.filter(r => r.priority === 'Critical' && r.status === 'Pending').length} />
-            <InputSummaryItem label="Available Block Windows" value={blocks.filter(b => b.isAvailable).length} />
-            <InputSummaryItem label="Total Train Operations" value="124 Today" />
-            <InputSummaryItem label="Optimization Engine" value="OR-Tools Solver" highlight />
-          </CardContent>
-        </Card>
+        {/* Architecture Overview / Inputs */}
+        <div className="lg:col-span-4 space-y-6">
+          <Card className="shadow-md overflow-hidden border-0 ring-1 ring-slate-200">
+            <div className="bg-slate-900 px-5 py-4 text-white">
+              <div className="flex items-center space-x-2">
+                <Settings2 className="w-5 h-5 text-blue-400" />
+                <h3 className="font-semibold text-lg tracking-wide">Data Inputs</h3>
+              </div>
+            </div>
+            <CardContent className="p-0">
+              <div className="divide-y divide-slate-100">
+                <InputRow label="Maintenance Requests" value={requests.filter(r => r.status === 'Pending').length} active />
+                <InputRow label="Train Schedules" value="124" active />
+                <InputRow label="Corridor Availability" value={blocks.filter(b => b.isAvailable).length} active />
+                <InputRow label="Operational Rules" value="Active" />
+                <InputRow label="Resource Constraints" value="Active" />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Engine Card */}
+          <Card className="bg-gradient-to-br from-indigo-900 to-slate-900 text-white shadow-xl border-0 overflow-hidden relative">
+            <div className="absolute top-0 right-0 p-8 opacity-10">
+              <BrainCircuit className="w-48 h-48" />
+            </div>
+            <CardContent className="p-8 relative z-10 flex flex-col items-center text-center">
+              <div className={`p-4 bg-white/10 rounded-2xl backdrop-blur-md mb-6 ${isSimulating ? 'animate-pulse' : ''}`}>
+                <BrainCircuit className="w-12 h-12 text-blue-400" />
+              </div>
+              <h3 className="text-xl font-bold tracking-wide mb-2">OR-Tools Optimizer</h3>
+              <p className="text-indigo-200 text-sm mb-6 leading-relaxed">
+                Minimizing downtime while adhering to complex railway operational constraints.
+              </p>
+              <div className="w-full bg-white/10 rounded-lg p-4 flex justify-between items-center text-sm font-medium">
+                <span className="text-indigo-200">Engine Status:</span>
+                {isSimulating ? (
+                  <span className="text-amber-400 flex items-center">
+                    <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> Processing
+                  </span>
+                ) : hasGenerated ? (
+                  <span className="text-emerald-400 flex items-center">
+                    <CheckCircle2 className="w-4 h-4 mr-1.5" /> Idle (Complete)
+                  </span>
+                ) : (
+                  <span className="text-slate-300">Ready</span>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Results Area */}
-        <div className="lg:col-span-2 space-y-6">
-          {isSimulating && (
-            <Card className="border-blue-200 bg-blue-50/50 shadow-sm">
-              <CardContent className="p-8 text-center flex flex-col items-center justify-center min-h-[300px]">
-                <div className="relative w-24 h-24 mb-6">
-                  <div className="absolute inset-0 border-4 border-blue-200 rounded-full"></div>
-                  <div className="absolute inset-0 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
-                  <BrainCircuit className="w-8 h-8 text-blue-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-                </div>
-                <h3 className="text-lg font-semibold text-slate-800 mb-2">Simulating Optimization</h3>
-                <p className="text-blue-600 font-medium animate-pulse">{SIMULATION_STEPS[simulationStep]}</p>
-                <div className="w-full max-w-md bg-slate-200 h-2 rounded-full mt-6 overflow-hidden">
-                  <div 
-                    className="bg-blue-600 h-full transition-all duration-300 ease-out rounded-full"
-                    style={{ width: `${((simulationStep + 1) / SIMULATION_STEPS.length) * 100}%` }}
-                  ></div>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
-          {!isSimulating && !hasGenerated && (
-            <div className="flex flex-col items-center justify-center p-12 bg-white rounded-xl border border-dashed border-slate-300 text-center min-h-[300px]">
-              <div className="p-4 bg-slate-50 rounded-full mb-4">
-                <Play className="w-8 h-8 text-slate-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-slate-700 mb-2">Ready to Optimize</h3>
-              <p className="text-slate-500 max-w-md">
-                Click "Generate Optimized Plan" to run the OR-Tools solver against current maintenance requests, train schedules, and block windows.
-              </p>
+        <div className="lg:col-span-8">
+          <Card className="h-full border-0 shadow-md ring-1 ring-slate-200 flex flex-col">
+            <div className="px-6 py-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between rounded-t-xl">
+              <h3 className="font-semibold text-lg text-slate-800">Optimization Results</h3>
+              {hasGenerated && (
+                <Badge variant="success" className="px-3 py-1 font-semibold shadow-sm">
+                  <ShieldCheck className="w-3.5 h-3.5 mr-1" />
+                  Plan Validated
+                </Badge>
+              )}
             </div>
-          )}
-
-          {!isSimulating && hasGenerated && (
-            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            
+            <CardContent className="p-8 flex-1 flex flex-col">
               
-              {/* Summary Metrics */}
-              <div className="grid grid-cols-3 gap-4">
-                <MetricCard title="Tasks Scheduled" value="12" sub="of 15 pending" />
-                <MetricCard title="Tasks Combined" value="5" sub="Into 7 blocks" />
-                <MetricCard title="Conflicts Avoided" value="100%" sub="0 train delays" />
-              </div>
+              {!isSimulating && !hasGenerated && (
+                <div className="flex-1 flex flex-col items-center justify-center text-center py-12">
+                  <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6 text-slate-300">
+                    <ArrowRight className="w-10 h-10 transform -rotate-45" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-700 mb-2">Awaiting Optimization</h3>
+                  <p className="text-slate-500 max-w-md">
+                    Initialize the AI engine to generate an optimal block schedule based on the provided inputs on the left.
+                  </p>
+                </div>
+              )}
 
-              {/* Generated Plans */}
-              <div className="space-y-4">
-                {plans.map(plan => (
-                  <Card key={plan.id} className={plan.status === 'AI Recommended' ? 'border-blue-200 ring-1 ring-blue-500/20' : ''}>
-                    <CardContent className="p-0">
-                      <div className="flex flex-col md:flex-row">
-                        
-                        <div className="p-6 flex-1">
-                          <div className="flex items-center justify-between mb-4">
-                            <h4 className="text-lg font-bold text-slate-800">{plan.section}</h4>
-                            <Badge 
-                              variant={
-                                plan.status === 'Approved' ? 'success' : 
-                                plan.status === 'Rejected' ? 'danger' : 'info'
-                              }
-                            >
-                              {plan.status}
-                            </Badge>
+              {isSimulating && (
+                <div className="flex-1 flex flex-col items-center justify-center py-12">
+                  <div className="relative w-32 h-32 mb-8">
+                    <div className="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+                    <div className="absolute inset-0 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Cpu className="w-10 h-10 text-blue-600" />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-800 mb-3 tracking-wide">Processing Model</h3>
+                  <p className="text-blue-600 font-medium text-lg animate-pulse mb-8">{SIMULATION_STEPS[simulationStep]}</p>
+                  
+                  <div className="w-full max-w-lg bg-slate-100 h-3 rounded-full overflow-hidden shadow-inner">
+                    <div 
+                      className="bg-gradient-to-r from-blue-600 to-indigo-600 h-full transition-all duration-[1200ms] ease-out rounded-full"
+                      style={{ width: `${((simulationStep + 1) / SIMULATION_STEPS.length) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+              )}
+
+              {!isSimulating && hasGenerated && (
+                <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                  
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <ResultMetric title="Blocks Created" value="4" />
+                    <ResultMetric title="Conflicts Avoided" value="100%" color="text-emerald-600" />
+                    <ResultMetric title="Maint. Hours" value="18" />
+                    <ResultMetric title="Planning Time" value="4.8s" />
+                  </div>
+
+                  <div className="space-y-4">
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider">Generated Block Schedule</h4>
+                    {plans.filter(p => p.status === 'AI Recommended').map(plan => (
+                      <div key={plan.id} className="group border border-blue-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                        <div className="bg-blue-50/50 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center space-x-3 mb-2">
+                              <h4 className="text-lg font-bold text-slate-900">{plan.section}</h4>
+                              <Badge variant="info" className="bg-blue-100 text-blue-800 border-blue-200 uppercase tracking-wider text-[10px]">AI Draft</Badge>
+                            </div>
+                            <div className="flex items-center text-slate-600 text-sm font-medium">
+                              <CalendarClock className="w-4 h-4 mr-2 text-slate-400" />
+                              {plan.date} • {plan.startTime} - {plan.endTime}
+                            </div>
                           </div>
                           
-                          <div className="flex items-center text-slate-600 mb-4 bg-slate-50 w-fit px-3 py-1.5 rounded-md border border-slate-100">
-                            <Clock className="w-4 h-4 mr-2 text-slate-400" />
-                            <span className="font-medium">{plan.startTime} - {plan.endTime}</span>
-                            <span className="mx-2">•</span>
-                            <span>{plan.date}</span>
-                          </div>
-
-                          <div className="space-y-3">
-                            <div>
-                              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Departments Combined</p>
-                              <div className="flex flex-wrap gap-2">
-                                {plan.departments.map(dept => (
-                                  <Badge key={dept} variant="default" className="bg-slate-100">{dept}</Badge>
-                                ))}
-                              </div>
-                            </div>
-                            <div>
-                              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">Tasks</p>
-                              <ul className="text-sm text-slate-700 list-disc list-inside space-y-1">
-                                {plan.tasks.map((task, i) => <li key={i}>{task}</li>)}
-                              </ul>
+                          <div className="flex-1">
+                            <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Consolidated Tasks</p>
+                            <div className="flex flex-wrap gap-2">
+                              {plan.tasks.map((t, i) => (
+                                <Badge key={i} variant="default" className="bg-white border-slate-200 text-slate-700 shadow-sm">{t}</Badge>
+                              ))}
                             </div>
                           </div>
+                          
+                          <div className="shrink-0 flex gap-2">
+                            <Button 
+                              variant="outline" 
+                              className="bg-white border-slate-200 hover:bg-slate-50"
+                              onClick={() => setReviewModalPlan(plan)}
+                            >
+                              Review Details
+                            </Button>
+                            <Button 
+                              variant="primary"
+                              onClick={() => handleApprove(plan.id)}
+                            >
+                              Approve
+                            </Button>
+                          </div>
                         </div>
-
-                        <div className="bg-slate-50 p-6 md:w-64 border-t md:border-t-0 md:border-l border-slate-100 flex flex-col justify-center space-y-3 shrink-0">
-                          <Button 
-                            variant="primary" 
-                            className="w-full"
-                            onClick={() => setReviewModalPlan(plan)}
-                          >
-                            Review & Approve
-                          </Button>
-                          <Button variant="outline" className="w-full">
-                            <RefreshCw className="w-4 h-4 mr-2" />
-                            Modify
-                          </Button>
-                        </div>
-                        
                       </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          )}
+                    ))}
+                  </div>
+
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
 
       <Modal
         isOpen={!!reviewModalPlan}
         onClose={() => setReviewModalPlan(null)}
-        title="Review Optimized Plan"
+        title="Review AI Block Plan"
         footer={
           <>
             <Button variant="danger" onClick={() => handleReject(reviewModalPlan!.id)}>Reject Plan</Button>
@@ -225,40 +259,40 @@ export function AIPlanner() {
       >
         {reviewModalPlan && (
           <div className="space-y-4">
-            <div className="bg-blue-50 border border-blue-100 text-blue-800 p-4 rounded-lg flex items-start">
+            <div className="bg-blue-50 border border-blue-200 text-blue-900 p-4 rounded-xl flex items-start shadow-sm">
               <CheckCircle2 className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0 text-blue-600" />
-              <p className="text-sm">
-                This block plan was automatically generated by the AI optimization engine. It combines maintenance tasks from multiple departments to minimize overall track downtime. No train conflicts were detected for this window.
+              <p className="text-sm font-medium leading-relaxed">
+                This block plan was generated by OR-Tools. It combines maintenance tasks from multiple departments to minimize downtime. 0 train conflicts detected for this window.
               </p>
             </div>
             
-            <div className="grid grid-cols-2 gap-4 pt-2">
+            <div className="grid grid-cols-2 gap-y-4 gap-x-8 p-4 bg-slate-50 rounded-xl border border-slate-100">
               <div>
-                <p className="text-sm text-slate-500">Plan ID</p>
-                <p className="font-medium text-slate-900">{reviewModalPlan.id}</p>
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Plan ID</p>
+                <p className="font-bold text-slate-900">{reviewModalPlan.id}</p>
               </div>
               <div>
-                <p className="text-sm text-slate-500">Section</p>
-                <p className="font-medium text-slate-900">{reviewModalPlan.section}</p>
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Section</p>
+                <p className="font-bold text-slate-900">{reviewModalPlan.section}</p>
               </div>
               <div>
-                <p className="text-sm text-slate-500">Time</p>
-                <p className="font-medium text-slate-900">{reviewModalPlan.startTime} - {reviewModalPlan.endTime}</p>
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Time Window</p>
+                <p className="font-bold text-slate-900">{reviewModalPlan.startTime} - {reviewModalPlan.endTime}</p>
               </div>
               <div>
-                <p className="text-sm text-slate-500">Date</p>
-                <p className="font-medium text-slate-900">{reviewModalPlan.date}</p>
+                <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Date</p>
+                <p className="font-bold text-slate-900">{reviewModalPlan.date}</p>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-100">
-              <p className="text-sm font-medium text-slate-700 mb-2">Tasks to be Executed</p>
-              <div className="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                <ul className="space-y-2 text-sm">
+            <div>
+              <p className="text-sm font-bold text-slate-700 mb-2">Tasks to be Executed</p>
+              <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <ul className="space-y-3">
                   {reviewModalPlan.tasks.map((task, i) => (
-                    <li key={i} className="flex items-center">
-                      <div className="w-2 h-2 rounded-full bg-blue-500 mr-2"></div>
-                      <span className="font-medium">{task}</span>
+                    <li key={i} className="flex items-center text-sm font-medium text-slate-800">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-600 mr-3"></div>
+                      {task}
                     </li>
                   ))}
                 </ul>
@@ -267,29 +301,29 @@ export function AIPlanner() {
           </div>
         )}
       </Modal>
-
     </div>
   );
 }
 
-function InputSummaryItem({ label, value, highlight = false }: { label: string, value: string | number, highlight?: boolean }) {
+function InputRow({ label, value, active }: { label: string, value: string | number, active?: boolean }) {
   return (
-    <div className="flex justify-between items-center py-2 border-b border-slate-100 last:border-0 last:pb-0">
-      <span className="text-sm text-slate-600">{label}</span>
-      <span className={`font-semibold text-sm ${highlight ? 'text-blue-600 bg-blue-50 px-2 py-0.5 rounded' : 'text-slate-800'}`}>
+    <div className="flex justify-between items-center py-4 px-5 hover:bg-slate-50 transition-colors">
+      <span className="text-sm font-medium text-slate-700">{label}</span>
+      <span className={`font-bold text-sm px-2.5 py-1 rounded-full ${active ? 'bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-600'}`}>
         {value}
       </span>
     </div>
   );
 }
 
-function MetricCard({ title, value, sub }: { title: string, value: string, sub: string }) {
+function ResultMetric({ title, value, color = "text-slate-800" }: { title: string, value: string, color?: string }) {
   return (
-    <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col justify-center items-center text-center">
-      <FileBarChart className="w-5 h-5 text-indigo-500 mb-2" />
-      <h3 className="text-2xl font-bold text-slate-800">{value}</h3>
-      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mt-1">{title}</p>
-      <p className="text-xs text-slate-400 mt-1">{sub}</p>
+    <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col items-center justify-center text-center">
+      <h3 className={`text-2xl font-black ${color} tracking-tight`}>{value}</h3>
+      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-1">{title}</p>
     </div>
   );
 }
+
+// Ensure CalendarClock is imported
+import { CalendarClock } from 'lucide-react';

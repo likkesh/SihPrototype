@@ -44,24 +44,116 @@ export const mockUsers: User[] = [
 ];
 
 export const mockGeneratedPlans: BlockPlan[] = [
+  // Sept 7 - Sept 13 (Weekly Plan Data)
   {
-    id: 'BP-2026-001',
+    id: 'BP-2026-W1-1',
+    section: 'Section A',
+    date: '2026-09-07',
+    startTime: '10:00',
+    endTime: '12:00',
+    departments: ['Engineering'],
+    tasks: ['Track Maintenance'],
+    status: 'Approved'
+  },
+  {
+    id: 'BP-2026-W1-2',
+    section: 'Section B',
+    date: '2026-09-08',
+    startTime: '14:00',
+    endTime: '16:00',
+    departments: ['Signal & Telecom'],
+    tasks: ['Signal Maintenance'],
+    status: 'Planned'
+  },
+  {
+    id: 'BP-2026-W1-3',
+    section: 'Section C',
+    date: '2026-09-09',
+    startTime: '09:00',
+    endTime: '11:00',
+    departments: ['Traction Distribution'],
+    tasks: ['Traction Maintenance'],
+    status: 'Approved'
+  },
+  {
+    id: 'BP-2026-W1-4',
     section: 'Section A',
     date: '2026-09-10',
     startTime: '10:00',
     endTime: '14:00',
     departments: ['Engineering', 'Traction Distribution'],
-    tasks: ['Track replacement', 'Transformer check', 'Surface repair'],
+    tasks: ['Track replacement', 'Transformer check'],
     status: 'AI Recommended'
   },
   {
-    id: 'BP-2026-002',
+    id: 'BP-2026-W1-5',
     section: 'Section B',
     date: '2026-09-10',
     startTime: '10:00',
     endTime: '13:00',
     departments: ['Signal & Telecom'],
     tasks: ['Calibration', 'Point Machine Overhaul'],
-    status: 'Approved'
+    status: 'In Progress'
+  },
+  {
+    id: 'BP-2026-W1-6',
+    section: 'Section D',
+    date: '2026-09-11',
+    startTime: '11:00',
+    endTime: '15:00',
+    departments: ['Engineering'],
+    tasks: ['Ballast cleaning'],
+    status: 'Conflict'
+  },
+  {
+    id: 'BP-2026-W1-7',
+    section: 'Section C',
+    date: '2026-09-12',
+    startTime: '08:00',
+    endTime: '12:00',
+    departments: ['Engineering'],
+    tasks: ['Bridge inspection'],
+    status: 'Completed'
+  },
+  // Additional Monthly Plan Data
+  {
+    id: 'BP-2026-M1-1',
+    section: 'Section A',
+    date: '2026-09-01',
+    startTime: '09:00',
+    endTime: '12:00',
+    departments: ['Engineering'],
+    tasks: ['Track Maintenance'],
+    status: 'Completed'
+  },
+  {
+    id: 'BP-2026-M1-2',
+    section: 'Section B',
+    date: '2026-09-03',
+    startTime: '13:00',
+    endTime: '15:00',
+    departments: ['Signal & Telecom'],
+    tasks: ['Signal Check'],
+    status: 'Completed'
+  },
+  {
+    id: 'BP-2026-M1-3',
+    section: 'Section C',
+    date: '2026-09-20',
+    startTime: '10:00',
+    endTime: '14:00',
+    departments: ['Traction Distribution'],
+    tasks: ['OHE repair'],
+    status: 'Planned'
+  },
+  {
+    id: 'BP-2026-M1-4',
+    section: 'Section D',
+    date: '2026-09-25',
+    startTime: '09:00',
+    endTime: '17:00',
+    departments: ['Engineering', 'Signal & Telecom'],
+    tasks: ['Major Overhaul'],
+    status: 'Planned'
   }
 ];

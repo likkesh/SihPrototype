@@ -54,5 +54,5 @@ export interface BlockPlan {
   endTime: string;
   departments: Department[];
   tasks: string[];
-  status: 'AI Recommended' | 'Approved' | 'Rejected';
+  status: 'AI Recommended' | 'Approved' | 'Rejected' | 'Planned' | 'In Progress' | 'Completed' | 'Conflict';
 }

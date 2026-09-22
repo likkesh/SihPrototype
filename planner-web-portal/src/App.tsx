@@ -10,13 +10,12 @@ import { Login } from './pages/Login';
 import { Dashboard as PlannerDashboard } from './pages/Dashboard';
 import { Requests } from './pages/Requests';
 import { AIPlanner } from './pages/AIPlanner';
-import { 
-  TrainSchedulePage, 
-  BlockAvailabilityPage, 
-  AnalyticsPage as PlannerAnalytics, 
-  UsersPage as PlannerUsers, 
-  SimplePlaceholderPage 
-} from './pages/OtherPages';
+import { TrainSchedulePage } from './pages/TrainSchedule';
+import { BlockAvailabilityPage } from './pages/BlockAvailability';
+import { AnalyticsPage as PlannerAnalytics } from './pages/Analytics';
+import { WeeklyPlan } from './pages/WeeklyPlan';
+import { MonthlyPlan } from './pages/MonthlyPlan';
+import { UsersPage as PlannerUsers, SimplePlaceholderPage } from './pages/OtherPages';
 
 // Admin Pages
 import { AdminDashboard } from './pages/admin/AdminDashboard';
@@ -68,8 +67,8 @@ function App() {
           <Route path="trains" element={<TrainSchedulePage />} />
           <Route path="availability" element={<BlockAvailabilityPage />} />
           <Route path="planner" element={<AIPlanner />} />
-          <Route path="weekly" element={<SimplePlaceholderPage title="Weekly Plan" desc="Calendar view of weekly block plans." />} />
-          <Route path="monthly" element={<SimplePlaceholderPage title="Monthly Plan" desc="Monthly calendar view for high-level block planning." />} />
+          <Route path="weekly" element={<WeeklyPlan />} />
+          <Route path="monthly" element={<MonthlyPlan />} />
           <Route path="analytics" element={<PlannerAnalytics />} />
           <Route path="users" element={<PlannerUsers />} />
           <Route path="settings" element={<SimplePlaceholderPage title="Settings" desc="System settings and configuration." />} />
