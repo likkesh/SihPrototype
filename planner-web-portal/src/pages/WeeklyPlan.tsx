@@ -5,7 +5,6 @@ import {
 } from 'lucide-react';
 import { Card, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
 import { useSharedData } from '../context/SharedDataContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +14,7 @@ const DATES = ['Sep 07', 'Sep 08', 'Sep 09', 'Sep 10', 'Sep 11', 'Sep 12', 'Sep 
 export function WeeklyPlan() {
   const { plans } = useSharedData();
   const navigate = useNavigate();
-  const [currentWeek, setCurrentWeek] = useState('Sep 07 - Sep 13, 2026');
+  const [currentWeek] = useState('Sep 07 - Sep 13, 2026');
 
   // Filter plans for this week (using the mock data range we set)
   const weeklyPlans = plans.filter(p => p.id.includes('W1') || p.date.startsWith('2026-09-0') || p.date.startsWith('2026-09-1'));

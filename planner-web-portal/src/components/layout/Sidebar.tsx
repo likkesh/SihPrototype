@@ -13,7 +13,10 @@ import {
   Settings 
 } from 'lucide-react';
 
-const navigationGroups = [
+type NavItem = { name: string; path: string; icon: any; exact?: boolean };
+type NavGroup = { title: string; items: NavItem[] };
+
+const navigationGroups: NavGroup[] = [
   {
     title: 'Overview',
     items: [

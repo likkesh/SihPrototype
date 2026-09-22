@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { 
-  BrainCircuit, CheckCircle2, Play, Settings2, Loader2, RefreshCw, Clock, 
+  BrainCircuit, CheckCircle2, Settings2, Loader2, 
   ArrowRight, ShieldCheck, Cpu
 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/Card';
+import { Card, CardContent } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { useSharedData } from '../context/SharedDataContext';
